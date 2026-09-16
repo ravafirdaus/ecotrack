@@ -8,7 +8,7 @@
     "backend": {
       "root": "ecotrack-backend/",
       "runtime": "container",
-      "entrypoint": "Dockerfile.vercel"
+      "entrypoint": "Dockerfile"
     }
   },
   "rewrites": [
