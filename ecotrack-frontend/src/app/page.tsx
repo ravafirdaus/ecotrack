@@ -77,13 +77,9 @@ export default function Home() {
 
               <div className="flex items-center gap-3 mb-10">
                 <div className="inline-flex items-center rounded-2xl bg-white px-5 py-3 shadow-sm">
-                  <Image
+                  <img 
                     src="/ecotrack-logo.png"
-                    alt="EcoTrack"
-                    width={220}
-                    height={62}
-                    priority
-                    className="h-auto w-52 object-contain"
+                    alt="EcoTrack Logo"
                   />
                 </div>
               </div>
