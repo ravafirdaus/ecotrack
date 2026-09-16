@@ -76,12 +76,14 @@ export default function Home() {
             <div className="relative z-10">
 
               <div className="flex items-center gap-3 mb-10">
-                <div className="inline-flex items-center rounded-2xl bg-white px-5 py-3 shadow-sm">
+                <div className="flex items-center justify-center mb-10">
                   <Image
                     src="/ecotrack-logo.png"
                     alt="EcoTrack Logo"
                     width={300}
                     height={100}
+                    className="object-contain"
+                    priority
                   />
                 </div>
               </div>
