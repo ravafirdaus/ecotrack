@@ -51,7 +51,7 @@ export default function AdminReports() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/waste-reports",
+        "/api/waste-reports",
         {
           headers: {
             Accept: "application/json",
@@ -96,7 +96,7 @@ export default function AdminReports() {
       }
 
       const response = await fetch(
-        `http://127.0.0.1:8000/api/waste-reports/${id}`,
+        `/api/waste-reports/${id}`,
         {
           method: "PUT",
           headers: {
@@ -152,7 +152,7 @@ export default function AdminReports() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/pickups",
+        "/api/pickups",
         {
           method: "POST",
           headers: {

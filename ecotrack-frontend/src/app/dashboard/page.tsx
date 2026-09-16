@@ -70,7 +70,7 @@ export default function Dashboard() {
       }
 
       const reportsResponse = await fetch(
-        "http://127.0.0.1:8000/api/waste-reports",
+        "/api/waste-reports",
         {
           headers: {
             Accept: "application/json",
@@ -91,7 +91,7 @@ export default function Dashboard() {
 
       if (isAdmin) {
         const pickupsResponse = await fetch(
-          "http://127.0.0.1:8000/api/pickups",
+          "/api/pickups",
           {
             headers: {
               Accept: "application/json",

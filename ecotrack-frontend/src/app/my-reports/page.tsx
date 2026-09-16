@@ -38,7 +38,7 @@ export default function MyReports() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/waste-reports",
+        "/api/waste-reports",
         {
           headers: {
             Accept: "application/json",
