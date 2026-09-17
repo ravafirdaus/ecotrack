@@ -50,9 +50,7 @@ export default function AdminReports() {
         throw new Error("Token admin tidak ditemukan.");
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
-        {
+      const response = await fetch("/api/waste-reports", {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
@@ -95,9 +93,7 @@ export default function AdminReports() {
         throw new Error("Token admin tidak ditemukan.");
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports/${id}`,
-        {
+      const response = await fetch(`/api/waste-reports/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -151,9 +147,7 @@ export default function AdminReports() {
         throw new Error("Token admin tidak ditemukan.");
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/pickups`,
-        {
+      const response = await fetch("/api/pickups", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

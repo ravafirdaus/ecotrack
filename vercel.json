@@ -1,28 +1,27 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "frontend": {
-      "root": "ecotrack-frontend/",
-      "framework": "nextjs"
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.php",
+      "use": "vercel-php@0.7.4"
     },
-    "backend": {
-      "root": "ecotrack-backend/",
-      "runtime": "container",
-      "entrypoint": "Dockerfile"
+    {
+      "src": "ecotrack-frontend/package.json",
+      "use": "@vercel/next"
     }
-  },
-  "rewrites": [
+  ],
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": {
-        "service": "backend"
-      }
+      "src": "/api(?:/(.*))?",
+      "dest": "/api/index.php"
     },
     {
-      "source": "/(.*)",
-      "destination": {
-        "service": "frontend"
-      }
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "ecotrack-frontend/$1"
     }
   ]
 }

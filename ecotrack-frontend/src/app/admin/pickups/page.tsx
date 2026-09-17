@@ -61,9 +61,7 @@ export default function AdminPickups() {
         throw new Error("Token admin tidak ditemukan.");
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/pickups`,
-        {
+      const response = await fetch("/api/pickups", {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
@@ -128,9 +126,7 @@ export default function AdminPickups() {
         throw new Error("Token admin tidak ditemukan.");
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/pickups/${id}`,
-        {
+      const response = await fetch(`/api/pickups/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

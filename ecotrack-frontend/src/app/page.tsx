@@ -18,9 +18,7 @@ export default function Home() {
     setMessage("");
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/login`,
-        {
+      const response = await fetch("/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

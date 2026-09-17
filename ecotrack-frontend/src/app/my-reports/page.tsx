@@ -43,9 +43,7 @@ export default function MyReports() {
         throw new Error("Anda belum login.");
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
-        {
+      const response = await fetch("/api/waste-reports", {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,

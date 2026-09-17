@@ -59,9 +59,7 @@ export default function ReportPage() {
         return;
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
-        {
+      const response = await fetch("/api/waste-reports", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

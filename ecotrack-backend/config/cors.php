@@ -4,7 +4,7 @@ $allowedOrigins = array_values(array_filter(array_map(
     'trim',
     explode(',', env(
         'CORS_ALLOWED_ORIGINS',
-        'http://localhost:3000,http://127.0.0.1:3000,https://ecotrack-fullstack-acnnr3mhp-ravafirdaus.vercel.app'
+        'http://localhost:3000,http://127.0.0.1:3000,https://ecotrack-fullstack-l545ghi2-ravafirdaus.vercel.app,https://ecotrack-fullstack-acnnr3mhp-ravafirdaus.vercel.app'
     ))
 )));
 

@@ -70,9 +70,7 @@ export default function Dashboard() {
         throw new Error("Token login tidak ditemukan.");
       }
 
-      const reportsResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
-        {
+      const reportsResponse = await fetch("/api/waste-reports", {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
@@ -93,9 +91,7 @@ export default function Dashboard() {
       );
 
       if (isAdmin) {
-        const pickupsResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/pickups`,
-          {
+        const pickupsResponse = await fetch("/api/pickups", {
             headers: {
               Accept: "application/json",
               Authorization: `Bearer ${token}`,
