@@ -63,13 +63,10 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
             className="flex items-center"
           >
-            <Image
+            <img
               src="/ecotrack-logo.png"
-              alt="EcoTrack"
-              width={170}
-              height={48}
-              priority
-              className="h-10 w-auto object-contain"
+              alt="EcoTrack Logo"
+              className="w-36 h-auto"
             />
           </Link>
 

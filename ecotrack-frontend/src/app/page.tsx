@@ -80,8 +80,7 @@ export default function Home() {
                   <img
                     src="/ecotrack-logo.png"
                     alt="EcoTrack Logo"
-                    width={300}
-                    height={100}
+                    className="w-72 h-auto"
                   />
                 </div>
               </div>

@@ -114,13 +114,10 @@ export default function RegisterPage() {
               {/* LOGO */}
               <div>
                 <div className="inline-flex rounded-2xl bg-white px-6 py-4 shadow-md">
-                  <Image
+                  <img
                     src="/ecotrack-logo.png"
-                    alt="EcoTrack"
-                    width={240}
-                    height={70}
-                    priority
-                    className="h-auto w-auto"
+                    alt="EcoTrack Logo"
+                    className="w-72 h-auto"
                   />
                 </div>
               </div>
