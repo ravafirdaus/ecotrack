@@ -1,7 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "installCommand": "cd ecotrack-frontend && npm install",
-  "buildCommand": "cd ecotrack-frontend && npm run build",
-  "outputDirectory": "ecotrack-frontend/.next"
+  "framework": "nextjs"
 }
