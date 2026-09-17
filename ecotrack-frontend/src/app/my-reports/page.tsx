@@ -11,6 +11,12 @@ interface WasteReport {
   location: string;
   weight: string;
   status: string;
+  user?: {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+  } | null;
 
   pickup?: {
     id: number;
@@ -38,7 +44,7 @@ export default function MyReports() {
       }
 
       const response = await fetch(
-        "/api/waste-reports",
+        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
         {
           headers: {
             Accept: "application/json",
@@ -55,7 +61,7 @@ export default function MyReports() {
 
       const data = await response.json();
 
-      setReports(data.data || []);
+      setReports(Array.isArray(data.data) ? data.data : []);
     } catch (error) {
       console.error(error);
 
@@ -141,11 +147,27 @@ export default function MyReports() {
     }
   };
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("id-ID", {
+  const formatDate = (date: string | null | undefined) => {
+    if (!date) return "-";
+
+    const datePart = date.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    const parsedDate = datePart
+      ? new Date(
+          Date.UTC(
+            Number(datePart[1]),
+            Number(datePart[2]) - 1,
+            Number(datePart[3])
+          )
+        )
+      : new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) return "-";
+
+    return parsedDate.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
+      timeZone: "UTC",
     });
   };
 
@@ -404,6 +426,10 @@ export default function MyReports() {
                             <h3 className="mt-1 text-lg font-bold text-gray-900">
                               {report.description || "Laporan Sampah"}
                             </h3>
+
+                            <p className="mt-1 text-xs text-gray-500">
+                              {report.user?.name || "-"}
+                            </p>
                           </div>
                         </div>
 
@@ -424,7 +450,7 @@ export default function MyReports() {
                           </p>
 
                           <p className="mt-1 font-medium text-gray-800">
-                            {report.location}
+                            {report.location || "-"}
                           </p>
                         </div>
 
@@ -434,7 +460,7 @@ export default function MyReports() {
                           </p>
 
                           <p className="mt-1 font-medium text-gray-800">
-                            {report.weight} kg
+                            {report.weight ? `${report.weight} kg` : "-"}
                           </p>
                         </div>
                       </div>
@@ -499,7 +525,7 @@ export default function MyReports() {
                               </p>
 
                               <p className="mt-1 font-medium text-gray-800">
-                                {report.pickup.pickup_address}
+                                {report.pickup.pickup_address || "-"}
                               </p>
                             </div>
                           </div>

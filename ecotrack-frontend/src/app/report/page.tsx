@@ -60,7 +60,7 @@ export default function ReportPage() {
       }
 
       const response = await fetch(
-        "/api/waste-reports",
+        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
         {
           method: "POST",
           headers: {

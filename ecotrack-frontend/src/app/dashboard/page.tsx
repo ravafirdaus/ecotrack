@@ -11,6 +11,7 @@ interface WasteReport {
   location: string;
   weight: string;
   status: string;
+  user?: User | null;
   waste_type?: {
     id: number;
     name: string;
@@ -70,7 +71,7 @@ export default function Dashboard() {
       }
 
       const reportsResponse = await fetch(
-        "/api/waste-reports",
+        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
         {
           headers: {
             Accept: "application/json",
@@ -87,11 +88,13 @@ export default function Dashboard() {
 
       const reportsData = await reportsResponse.json();
 
-      setReports(reportsData.data || []);
+      setReports(
+        Array.isArray(reportsData.data) ? reportsData.data : []
+      );
 
       if (isAdmin) {
         const pickupsResponse = await fetch(
-          "/api/pickups",
+          `${process.env.NEXT_PUBLIC_API_URL}/pickups`,
           {
             headers: {
               Accept: "application/json",
@@ -108,7 +111,9 @@ export default function Dashboard() {
 
         const pickupsData = await pickupsResponse.json();
 
-        setPickups(pickupsData.data || []);
+        setPickups(
+          Array.isArray(pickupsData.data) ? pickupsData.data : []
+        );
       } else {
         setPickups([]);
       }
@@ -204,13 +209,27 @@ export default function Dashboard() {
     }
   };
 
-  const formatDate = (date: string) => {
+  const formatDate = (date: string | null | undefined) => {
     if (!date) return "-";
 
-    return new Date(date).toLocaleDateString("id-ID", {
+    const datePart = date.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    const parsedDate = datePart
+      ? new Date(
+          Date.UTC(
+            Number(datePart[1]),
+            Number(datePart[2]) - 1,
+            Number(datePart[3])
+          )
+        )
+      : new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) return "-";
+
+    return parsedDate.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
+      timeZone: "UTC",
     });
   };
 
@@ -605,6 +624,10 @@ export default function Dashboard() {
                         <h3 className="mt-1 truncate font-bold text-gray-900">
                           {report.description || "Laporan sampah"}
                         </h3>
+
+                        <p className="mt-1 truncate text-xs text-gray-500">
+                          {report.user?.name || user?.name || "-"}
+                        </p>
 
                         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
                           <span>⌖ {report.location}</span>

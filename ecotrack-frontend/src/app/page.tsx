@@ -19,7 +19,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        "/api/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/login`,
         {
           method: "POST",
           headers: {
@@ -76,11 +76,11 @@ export default function Home() {
             <div className="relative z-10">
 
               <div className="flex items-center gap-3 mb-10">
-                <div className="flex items-center justify-center mb-10">
+                <div className="inline-flex items-center justify-center bg-white rounded-2xl p-5 shadow-md">
                   <img
                     src="/ecotrack-logo.png"
                     alt="EcoTrack Logo"
-                    className="w-72 h-auto"
+                    className="w-64 h-auto"
                   />
                 </div>
               </div>

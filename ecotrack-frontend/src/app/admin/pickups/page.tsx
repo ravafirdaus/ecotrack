@@ -7,6 +7,7 @@ import AuthGuard from "../../components/AuthGuard";
 
 interface Pickup {
   id: number;
+  waste_report_id: number;
   pickup_date: string;
   pickup_address: string;
   notes: string | null;
@@ -14,17 +15,25 @@ interface Pickup {
 
   waste_report: {
     id: number;
+    user_id: number;
+    waste_type_id: number;
+    weight: string;
     description: string;
     location: string;
-    weight: string;
+    status: string;
 
-    user?: {
+    user: {
       id: number;
       name: string;
       email: string;
       role: string;
-    };
-  };
+    } | null;
+
+    waste_type?: {
+      id: number;
+      name: string;
+    } | null;
+  } | null;
 }
 
 export default function AdminPickups() {
@@ -53,7 +62,7 @@ export default function AdminPickups() {
       }
 
       const response = await fetch(
-        "/api/pickups",
+        `${process.env.NEXT_PUBLIC_API_URL}/pickups`,
         {
           headers: {
             Accept: "application/json",
@@ -70,7 +79,7 @@ export default function AdminPickups() {
 
       const data = await response.json();
 
-      setPickups(data.data || []);
+      setPickups(Array.isArray(data.data) ? data.data : []);
     } catch (error) {
       console.error(error);
 
@@ -90,6 +99,25 @@ export default function AdminPickups() {
     status: "on_the_way" | "completed"
   ) => {
     try {
+      const pickup = pickups.find((item) => item.id === id);
+      const allowedStatus =
+        pickup?.status === "scheduled"
+          ? "on_the_way"
+          : pickup?.status === "on_the_way"
+          ? "completed"
+          : null;
+
+      if (allowedStatus !== status) {
+        setError(
+          pickup?.status === "completed"
+            ? "Pickup ini sudah selesai."
+            : pickup?.status === "cancelled"
+            ? "Pickup ini sudah dibatalkan."
+            : "Perubahan status pickup tidak valid. Silakan refresh data."
+        );
+        return;
+      }
+
       setActionLoading(id);
       setError("");
       setSuccess("");
@@ -101,7 +129,7 @@ export default function AdminPickups() {
       }
 
       const response = await fetch(
-        `/api/pickups/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/pickups/${id}`,
         {
           method: "PUT",
           headers: {
@@ -178,11 +206,31 @@ export default function AdminPickups() {
     }
   };
 
-  const formatPickupDate = (date: string) => {
-    return new Date(date).toLocaleDateString("id-ID", {
+  const formatPickupDate = (date: string | null | undefined) => {
+    if (!date) {
+      return "-";
+    }
+
+    const datePart = date.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    const parsedDate = datePart
+      ? new Date(
+          Date.UTC(
+            Number(datePart[1]),
+            Number(datePart[2]) - 1,
+            Number(datePart[3])
+          )
+        )
+      : new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+      return "-";
+    }
+
+    return parsedDate.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
+      timeZone: "UTC",
     });
   };
 
@@ -458,7 +506,7 @@ export default function AdminPickups() {
                             </p>
 
                             <p className="mt-1 font-medium text-gray-800">
-                              {pickup.pickup_address}
+                              {pickup.pickup_address || "-"}
                             </p>
                           </div>
 
@@ -468,7 +516,9 @@ export default function AdminPickups() {
                             </p>
 
                             <p className="mt-1 font-medium text-gray-800">
-                              {pickup.waste_report?.weight} kg
+                              {pickup.waste_report?.weight
+                                ? `${pickup.waste_report.weight} kg`
+                                : "-"}
                             </p>
                           </div>
 
@@ -489,7 +539,9 @@ export default function AdminPickups() {
                               </p>
 
                               <p className="mt-1 text-sm font-semibold text-gray-800">
-                                #{pickup.waste_report?.id}
+                                {pickup.waste_report?.id
+                                  ? `#${pickup.waste_report.id}`
+                                  : "-"}
                               </p>
                             </div>
 
@@ -526,7 +578,18 @@ export default function AdminPickups() {
                               </p>
 
                               <p className="mt-1 text-sm font-semibold text-gray-800">
-                                {pickup.waste_report?.location}
+                                {pickup.waste_report?.location || "-"}
+                              </p>
+                            </div>
+
+                            {/* DESKRIPSI SAMPAH */}
+                            <div>
+                              <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                                Deskripsi Sampah
+                              </p>
+
+                              <p className="mt-1 text-sm font-semibold text-gray-800">
+                                {pickup.waste_report?.description || "-"}
                               </p>
                             </div>
 
@@ -654,6 +717,14 @@ export default function AdminPickups() {
                               Pickup telah selesai dan laporan terkait
                               telah ditandai sebagai sampah yang sudah
                               diambil.
+                            </p>
+                          </div>
+                        )}
+
+                        {pickup.status === "cancelled" && (
+                          <div className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                            <p className="text-sm font-medium text-red-800">
+                              Pickup Dibatalkan
                             </p>
                           </div>
                         )}

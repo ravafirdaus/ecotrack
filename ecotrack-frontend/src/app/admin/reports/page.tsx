@@ -51,7 +51,7 @@ export default function AdminReports() {
       }
 
       const response = await fetch(
-        "/api/waste-reports",
+        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports`,
         {
           headers: {
             Accept: "application/json",
@@ -68,7 +68,7 @@ export default function AdminReports() {
 
       const data = await response.json();
 
-      setReports(data.data || []);
+      setReports(Array.isArray(data.data) ? data.data : []);
     } catch (error) {
       console.error(error);
 
@@ -96,7 +96,7 @@ export default function AdminReports() {
       }
 
       const response = await fetch(
-        `/api/waste-reports/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/waste-reports/${id}`,
         {
           method: "PUT",
           headers: {
@@ -152,7 +152,7 @@ export default function AdminReports() {
       }
 
       const response = await fetch(
-        "/api/pickups",
+        `${process.env.NEXT_PUBLIC_API_URL}/pickups`,
         {
           method: "POST",
           headers: {
@@ -551,7 +551,7 @@ export default function AdminReports() {
                             </p>
 
                             <p className="mt-1 font-medium text-gray-800">
-                              {report.location}
+                              {report.location || "-"}
                             </p>
                           </div>
 
@@ -562,7 +562,7 @@ export default function AdminReports() {
                             </p>
 
                             <p className="mt-1 font-medium text-gray-800">
-                              {report.weight} kg
+                              {report.weight ? `${report.weight} kg` : "-"}
                             </p>
                           </div>
 
