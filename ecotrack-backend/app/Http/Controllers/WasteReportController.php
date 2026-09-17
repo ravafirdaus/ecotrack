@@ -55,6 +55,12 @@ class WasteReportController extends Controller
             'location' => $request->location,
         ]);
 
+        $report->load([
+            'user',
+            'wasteType',
+            'pickup'
+        ]);
+
         return response()->json([
             'success' => true,
             'message' => 'Laporan sampah berhasil ditambahkan',

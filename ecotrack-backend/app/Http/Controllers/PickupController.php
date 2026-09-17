@@ -60,6 +60,11 @@ class PickupController extends Controller
             'status' => 'scheduled',
         ]);
 
+        $pickup->load([
+            'wasteReport.user',
+            'wasteReport.wasteType'
+        ]);
+
         // Update status laporan
         $report->update([
             'status' => 'scheduled'
@@ -110,6 +115,11 @@ class PickupController extends Controller
                     'notes',
                 ])
             );
+
+            $pickup->load([
+                'wasteReport.user',
+                'wasteReport.wasteType'
+            ]);
 
             return response()->json([
                 'success' => true,
