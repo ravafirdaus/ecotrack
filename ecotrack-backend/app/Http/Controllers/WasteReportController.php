@@ -12,21 +12,22 @@ class WasteReportController extends Controller
     {
         $user = $request->user();
 
-        // Admin bisa melihat semua laporan
         if ($user->role === 'admin') {
             $reports = WasteReport::with([
                 'user',
                 'wasteType',
                 'pickup'
-            ])->get();
+            ])
+            ->orderByDesc('created_at')
+            ->get();
         } else {
-            // User biasa hanya bisa melihat laporan miliknya
             $reports = WasteReport::with([
                 'user',
                 'wasteType',
                 'pickup'
             ])
             ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
             ->get();
         }
 
